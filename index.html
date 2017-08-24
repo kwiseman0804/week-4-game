@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Crystal Collector</title>
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+    <h1>Number to Guess: <span id="guess"></span></h1>
+    <div>
+        <h3 id="score"> New Score:</h3></div>
+    <div id="crystal"></div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <div id="wins"></div>
+    <div id="loses"></div>
+    <div id="wincount"></div>
+    <div id="losscount"></div>
+    <br>
+    <button id="reset" onClick="location.reload()">
+        <p>reset game</p>
+    </button>
+    <script type="text/javascript">
+    // var targetNumber
+
+    var minNumber = 19;
+    var maxNumber = 120;
+    var wins = 0;
+    var loses = 0;
+    var resetGame
+    var newGame
+
+
+
+    var randomNumber = randomNumberFromRange(minNumber, maxNumber);
+
+    function randomNumberFromRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    console.log(randomNumber);
+
+    $("#guess").text(randomNumber);
+
+    var counter = 0;
+
+    var numberOptions = [];
+
+    function randomSelect() {
+        var randomNum = Math.floor(Math.random() * (12 - 1) + 1);
+
+        if (numberOptions.indexOf(randomNum) < 0) {
+            numberOptions.push(randomNum)
+        }
+    }
+
+
+    for (var i = 0; numberOptions.length < 4; i++) {
+        randomSelect();
+        // console.log(numberOptions)
+    }
+    // console.log(numberOptions);
+
+    var pictures = ["http://i.imgur.com/yQfcKyJ.jpg", "http://i.imgur.com/uUnT9wY.jpg", "http://i.imgur.com/PTi6GVA.jpg", "http://i.imgur.com/6Tez7QR.jpg"]
+    //change to random
+
+
+    //change pictures to picture array
+
+    for (var i = 0; i < 4; i++) {
+        var imagecrystal = $("<img>");
+
+        imagecrystal.addClass("crystal-image");
+
+        imagecrystal.attr("src", pictures[i]);
+
+        imagecrystal.attr("data-crystalValue", numberOptions[i]);
+
+        $("#crystal").append(imagecrystal);
+    }
+
+    $(document).on("click", ".crystal-image", function() {
+        var crystalValue = ($(this).attr("data-crystalValue"));
+        crystalValue = parseInt(crystalValue)
+
+
+        counter += crystalValue;
+
+
+        $("#score").text("New Score: " + counter);
+
+
+        if (counter === randomNumber) {
+            $("#wins").text("you win");
+            wins++;
+            $("#wincount").text("Wins: " + wins);
+
+
+
+        } else if (counter >= randomNumber) {
+            loses++;
+            $("#loses").text("you lose");
+            $("#losscount").text("loses: " + loses);
+        }
+
+
+    });
+
+    $("#crystals").on("click", function() {
+        counter++
+        $("#crystals").text(counter);
+        if (checkforReset()) {
+            resetGame();
+        }
+    });
+
+    </script>
+</body>
+
+</html>
